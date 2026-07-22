@@ -13,9 +13,17 @@ Bộ Kit này **không chỉ dành riêng cho Automation** — mà được thi�
 ## 🌟 Tính Năng Nổi Bật
 
 - **🔁 Quy Trình AI Hoàn Thiện (End-to-End):** Được xây dựng thành một quy trình ứng dụng AI khép kín — từ phân tích yêu cầu (Requirements), thiết kế test cases (Manual), đến viết script tự động (Automation), tích hợp CI/CD và báo cáo kết quả — tất cả đều có AI hỗ trợ.
-- **📋 Hỗ Trợ Cả Manual & Automation Testing:** Không chỉ dừng lại ở Automation, Kit còn trang bị đầy đủ quy trình, skill và prompt cho **Manual Tester** — bao gồm phân tích rủi ro (RBT), thiết kế test cases chất lượng cao và quản lý kết quả kiểm thử.
+- **📋 Manual Testing Tiêu Chuẩn Cao (AI-RBT Framework):**
+  - Đánh giá rủi ro theo 3 mức độ `High / Medium / Low Risk`.
+  - Checklist validation **15 loại Input Field Types** (Text, Email, Phone, Date, Number, Dropdown, Checkbox/Radio, File Upload, Password, Textarea, OTP/MFA, Date Range, Rich Text, Multi-Select, Range Slider).
+  - Tích hợp Scenarios Chuyên Sâu & Non-Functional (Race Condition, Session/Network Resilience, Localization/UTF-8/Emoji, Keyboard A11y, HTTP Status Codes).
+  - **AI Self-Quality Gate (5 Tiêu chí):** Đảm bảo Unique TC ID, Step-Expected 1-1, Concrete Test Data, Field Coverage, và Automation Metadata Ready.
+- **🌐 API Testing & OWASP Security Standards:**
+  - Bao phủ đủ **12 HTTP Status Codes** tiêu chuẩn (`200`, `201`, `400`, `401`, `403`, `404`, `406`, `409`, `413`, `415`, `429`, `500`).
+  - Tích hợp **OWASP API Security Checklist** (BOLA/IDOR, Mass Assignment, SQLi/XSS, ReDoS, Sensitive Data Masking).
+  - Response time SLA (< 2 giây), Dynamic Auth Token, Teardown/Cleanup test data tự động.
 - **🧠 Tối ưu cho QA/Tester:** Tất cả các prompt, rule và command đều được tinh chỉnh dựa trên tư duy và quy trình làm việc thực tế của cả **Manual Tester** lẫn **Automation Engineer**.
-- **🌐 Hỗ trợ Đa Nền Tảng:** Tương thích với các framework phổ biến như Web (Playwright, Selenium), Mobile (Appium), và API (Playwright, REST Assured).
+- **💻 Hỗ trợ Đa Nền Tảng:** Tương thích với các framework phổ biến như Web (Playwright, Selenium), Mobile (Appium), và API (Playwright API, REST Assured, Pytest Requests, Supertest).
 - **🛡️ Tuân thủ Tiêu Chuẩn Cao (Strict Rules):** Đảm bảo AI luôn đi theo cấu trúc Page Object Model (POM), viết code rõ ràng, không đoán bừa locator và tự động sửa lỗi (Self-fix).
 - **🇻🇳 Giao Tiếp Bằng Tiếng Việt:** AI được cấu hình để trao đổi, giải thích và báo cáo hoàn toàn bằng Tiếng Việt, thân thiện với người dùng Việt Nam.
 
@@ -51,13 +59,13 @@ claude-testing-kit/
 
 ---
 
-### `plans/` — Quy Trình 6 Bước Chuyên Sâu
+## `plans/` — Quy Trình 6 Bước Chuyên Sâu
 
 Dành cho các tác vụ phức tạp, cần thực hiện **tuần tự trong cùng 1 conversation**.
 
 | Plan | Mô tả | Bắt đầu nhanh |
 |------|-------|---------------|
-| `plans/manual/` | Sinh Manual Test Cases theo quy trình **AI-RBT 6 bước** (Risk-Based Testing) | Xem `plans/manual/QUICK_START.md` |
+| `plans/manual/` | Sinh Manual Test Cases theo quy trình **AI-RBT 6 bước** (Risk-Based Testing, 15 field types, OWASP & AI Quality Gate) | Xem `plans/manual/QUICK_START.md` |
 | `plans/automation/` | Sinh Automation Scripts theo **6 bước** từ context → review | Xem `plans/automation/QUICK_START.md` |
 | `plans/cross-module/` | Phân tích tính năng **đa module** & sinh **ma trận kết hợp** (Pairwise/Cartesian) | Xem `plans/cross-module/QUICK_START.md` |
 
@@ -70,7 +78,7 @@ Dành cho tác vụ **đơn lẻ**, chỉ cần copy → thay `[...]` bằng d�
 | # | Prompt | Mục đích |
 |---|--------|----------|
 | 01 | `prompt_01_generate_requirements.txt` | Phân tích website sinh Requirements |
-| 02 | `prompt_02_generate_test_cases.txt` | Sinh test cases từ requirements |
+| 02 | `prompt_02_generate_test_cases.txt` | **[Mới]** Sinh manual TCs RBT chuẩn 15 field types & Quality Gate |
 | 03 | `prompt_03_create_framework_playwright.txt` | Dựng framework Playwright TS |
 | 03 | `prompt_03_create_framework_selenium.txt` | Dựng framework Selenium Java |
 | 04 | `prompt_04_generate_script_playwright.txt` | Viết test script Playwright TS |
@@ -78,8 +86,7 @@ Dành cho tác vụ **đơn lẻ**, chỉ cần copy → thay `[...]` bằng d�
 | 05 | `prompt_05_convert_manual_to_automation.txt` | Chuyển manual TC sang automation |
 | 07 | `prompt_07_generate_test_data.txt` | Sinh test data có cấu trúc |
 | 08 | `prompt_08_analyze_flaky_tests.txt` | Phân tích test không ổn định |
-| 09 | `prompt_09_generate_api_tests.txt` | Viết test API từ Swagger |
-
+| 09 | `prompt_09_generate_api_tests.txt` | **[Mới]** Viết test API 12 status codes & OWASP Security |
 
 ---
 
@@ -117,12 +124,6 @@ Dành cho tác vụ **đơn lẻ**, chỉ cần copy → thay `[...]` bằng d�
 
 4. **Bắt đầu trò chuyện** — Claude Code sẽ tự động nhận diện cấu hình `.claude` và `CLAUDE.md`.
 
-### Cách 3: Sử dụng Plan hoặc Prompt Template
-
-- Tác vụ phức tạp (1 module) → Mở `plans/manual/QUICK_START.md` hoặc `plans/automation/QUICK_START.md`
-- Tác vụ đa module (ma trận kết hợp) → Mở `plans/cross-module/QUICK_START.md`
-- Tác vụ nhanh → Copy prompt từ `prompt_templates/` → paste vào chat
-
 ---
 
 ## 🔄 So Sánh Antigravity vs Claude Code
@@ -134,7 +135,7 @@ Dành cho tác vụ **đơn lẻ**, chỉ cần copy → thay `[...]` bằng d�
 | Slash commands | `.agent/workflows/` | `.claude/commands/` |
 | Quy tắc | `.agent/rules/` | `.claude/rules/` |
 | Kỹ năng | `.agent/skills/` | `.claude/skills/` |
-| Naming convention | Gạch dưới (`_`) | Gạch ngang (`-`) |
+| Naming convention | Gạch dưới (`_`) | Dấu gạch dưới (`_`) trong `.claude/commands/` |
 | Cấu hình quyền | Không có | `.claude/settings.json` |
 
 > **💡 Tip:** Cả hai phiên bản đều dùng chung thư mục `plans/`, `prompt_templates/`, `scripts/`, và `practices/`. Bạn có thể giữ cả `.agent/` và `.claude/` trong cùng một repo nếu muốn hỗ trợ cả hai nền tảng.
@@ -158,5 +159,5 @@ Dành cho tác vụ **đơn lẻ**, chỉ cần copy → thay `[...]` bằng d�
 Dự án này được phân phối dưới giấy phép nguồn mở **[MIT License](LICENSE)**.
 
 ---
-Anh Tester Automation Testing 🎯
+Anh Tester Automation Testing 🎯  
 https://anhtester.com

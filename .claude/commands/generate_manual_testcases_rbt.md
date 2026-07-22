@@ -7,13 +7,13 @@ skills:
 
 > **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`rbt_manual_testing`** (tại `.claude/skills/rbt_manual_testing/SKILL.md`) trước khi bắt đầu thực hiện tác vụ này. Sử dụng **Mode FULL RBT** của skill. Ngoài ra, tham khảo thêm skill **`requirements_analyzer`** để hiểu cách phân tích giao diện nếu cần.
 
-# Workflow: Sinh Manual Test Cases theo AI-RBT Framework (FULL RBT Mode)
+# Command: Sinh Manual Test Cases theo AI-RBT Framework (FULL RBT Mode)
 
-Workflow này sử dụng **Mode FULL RBT** của skill `rbt_manual_testing` — quy trình **AI-RBT (AI-Driven Risk-Based Testing)** gồm 6 bước tuần tự để sinh manual test cases từ tài liệu yêu cầu.
+Command này sử dụng **Mode FULL RBT** của skill `rbt_manual_testing` — quy trình **AI-RBT (AI-Driven Risk-Based Testing)** gồm 6 bước tuần tự để sinh manual test cases từ tài liệu yêu cầu.
 
 > [!NOTE]
-> **Luồng này dành cho Antigravity (slash command).** Agent thực hiện theo hướng dẫn trong skill, KHÔNG cần đọc file prompt.txt.
-> Nếu QA team muốn dùng prompt chi tiết hơn (ChatGPT/Claude), hãy copy-paste từng bước từ `plans/manual/01-06/prompt.txt`.
+> **Luồng này dành cho Claude Code (slash command).** Agent thực hiện theo hướng dẫn trong skill, KHÔNG cần đọc file prompt.txt.
+> Nếu QA team muốn dùng prompt chi tiết hơn (ChatGPT/Claude Web), hãy copy-paste từng bước từ `plans/manual/01-06/prompt.txt`.
 
 ## ⚠️ Nguyên tắc thực thi
 
@@ -48,26 +48,32 @@ Thực hiện theo hướng dẫn chi tiết trong skill `rbt_manual_testing` �
 3. **Chờ user review** scenarios → sang Bước 5
 
 ### Bước 5: Sinh Test Case chi tiết (RBT & TC Generation)
-1. Đánh giá Risk Level (High/Medium/Low) cho mỗi Module
-2. Sinh test cases đầy đủ: Title, Pre-condition, Steps, Expected, Test Data, Priority
-3. Áp dụng kỹ thuật: EP, BVA, Decision Table, State Transition
-4. **Validation chuyên biệt từng trường (Field-Level Validation):**
-   - Liệt kê tất cả input fields trên form/UI đang test
-   - Sinh validation TCs **riêng cho TỪNG trường** theo đặc tính riêng
-   - Tham chiếu **Bảng Field-Level Validation** trong skill `rbt_manual_testing`
-   - **KHÔNG** gộp validation nhiều trường vào 1 TC
-5. Bao phủ đầy đủ: Happy Path, Negative, Boundary, Edge Cases
-6. Test Data phải cụ thể (không placeholder chung)
-7. Nếu quá nhiều → sinh từng Module, hỏi user để tiếp tục
+1. Đánh giá Risk Level (High/Medium/Low) cho mỗi Module.
+2. Sinh test cases đầy đủ: Title, Pre-condition, Steps, Expected, Test Data, Priority.
+3. Áp dụng kỹ thuật: EP, BVA, Decision Table, State Transition.
+4. **Validation chuyên biệt từng trường (Field-Level Validation - 15 Field Types):**
+   - Liệt kê tất cả input fields trên form/UI đang test.
+   - Sinh validation TCs **riêng cho TỪNG trường** (Text, Email, Phone, Date, Number, Dropdown, Checkbox/Radio, File Upload, Password, Textarea, OTP/MFA, Date Range, Rich Text, Multi-Select, Range Slider).
+   - Tham chiếu **Bảng Field-Level Validation Checklist** trong skill `rbt_manual_testing`.
+   - **KHÔNG** gộp validation nhiều trường vào 1 TC.
+5. **Bao phủ Scenarios Chuyên Sâu & Non-Functional:**
+   - Double Submit / Race Condition (click liên tiếp nút submit, concurrent edit).
+   - Session & Network Resilience (session timeout mid-form, loss of network, slow 3G).
+   - Localization & UTF-8 / Emoji (tiếng Việt có dấu, emoji, ký tự đa ngôn ngữ).
+   - Keyboard Accessibility (Tab order, Enter/Space trigger, Focus state).
+   - HTTP Status Codes (cho API TCs: 200, 400, 401, 403, 404, 409, 422, 429, 500/503).
+6. Test Data phải cụ thể (không placeholder chung chung).
+7. Nếu quá nhiều → sinh từng Module, hỏi user để tiếp tục.
 
-### Bước 6: Chuẩn hóa Format (Template Mapping)
-1. Đóng gói toàn bộ test cases vào bảng Markdown chuẩn:
-   `| TC ID | Module | Risk Level | Test Title | Pre-Condition | Test Steps | Expected Result | Priority | Test Data |`
-2. Không được bỏ sót test case nào
-3. Xuất dưới dạng Artifact nếu dài
+### Bước 6: Chuẩn hóa Format & Metadata (Template Mapping)
+1. Đóng gói toàn bộ test cases vào bảng Markdown chuẩn đầy đủ metadata cho Automation:
+   `| TC ID | Module | Risk Level | Test Title | Pre-Condition | Test Steps | Expected Result | Priority | Test Data | Automatable | Auto Type | Tags |`
+2. **Chạy Self-Quality Gate (5 tiêu chí):** Unique TC ID, 1-to-1 Step-Expected matching, Concrete Test Data, Field Validation Coverage, và Automation Metadata Ready.
+3. Xuất dưới dạng Artifact (`test_cases_<module>.md`).
 
 ## Output
 
-- Bảng Test Cases Markdown hoàn chỉnh, sẵn sàng copy sang Excel/Jira/TestRail
+- Bảng Test Cases Markdown hoàn chỉnh kèm Automation Metadata (`Automatable`, `Auto Type`, `Tags`), sẵn sàng copy sang Excel/Jira/TestRail hoặc sync trực tiếp vào Google Sheets
 - Traceability Matrix
 - Danh sách Ambiguities đã giải quyết
+- Báo cáo Self-Quality Gate Verification

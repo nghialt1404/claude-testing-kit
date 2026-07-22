@@ -48,7 +48,7 @@ Agent tự động chọn mode dựa trên **trigger keywords** và **ngữ cả
 ### → Mode QUICK
 
 Kích hoạt khi:
-- User dùng workflow `/generate_testcases_from_requirements`
+- User dùng command `/generate_testcases_from_requirements`
 - User nói: "sinh test cases nhanh", "tạo TC từ requirement này", "viết test cases cho form..."
 - Requirements đã rõ ràng, scope nhỏ (1 module / 1 tính năng)
 - User không yêu cầu phân tích rủi ro hay quy trình bài bản
@@ -56,7 +56,7 @@ Kích hoạt khi:
 ### → Mode FULL RBT
 
 Kích hoạt khi:
-- User dùng workflow `/generate_manual_testcases_rbt`
+- User dùng command `/generate_manual_testcases_rbt`
 - User nói: "quy trình 6 bước", "phân tích RBT", "sinh test cases đầy đủ", "sinh bộ TC bài bản"
 - Scope lớn (nhiều modules, hệ thống phức tạp)
 - User yêu cầu Traceability Matrix hoặc đánh giá Risk Level
@@ -95,25 +95,27 @@ Sinh test cases **nhanh, đủ chất lượng** từ requirements/user stories 
    - **State Transition:** Test chuyển đổi trạng thái (nếu có workflow)
 4. **Validation chuyên biệt từng trường (Field-Level Validation):**
    - Liệt kê **tất cả input fields** trên form/UI
-   - Sinh validation test cases **riêng cho TỪNG trường** theo đặc tính riêng của nó
-   - Áp dụng checklist validation theo loại field (xem bảng Field-Level Validation bên dưới)
-   - **KHÔNG** gộp validation nhiều trường vào 1 test case
-5. **Sinh test cases** với đầy đủ fields:
-   - TC ID (format: `[DỰ_ÁN]_[MODULE]_TC_[SỐ]`)
-   - Module
-   - Test Case Title / Test Scenario
-   - Pre-conditions
-   - Test Steps (đánh số)
-   - Expected Results (đánh số tương ứng)
-   - Test Data (**phải cụ thể**, không placeholder)
-   - Priority (Critical / High / Medium / Low)
-6. **Xuất ra bảng Markdown** chuẩn, sẵn sàng copy sang Excel/Jira
+   - Sinh validation test cases **riêng cho TỪNG trường** dựa theo Bảng Checklist 15 loại field
+   - **KHÔNG** gộp validation của nhiều trường vào 1 test case
+5. **Bao phủ các Scenarios Chuyên sâu & Non-Functional:**
+   - Race Condition & Double Submit
+   - Session & Network Resilience
+   - Localization & UTF-8 / Emoji
+   - Keyboard Accessibility (A11y)
+   - HTTP Status Codes (cho API TCs)
+6. **Xuất ra bảng Markdown** chuẩn có đầy đủ metadata cho Automation, sẵn sàng sync vào Google Sheets hoặc Jira/TestRail.
+7. **Chạy Self-Quality Gate (Tự kiểm tra chất lượng):** Rà soát lại 100% test cases trước khi xuất kết quả.
 
-## Bảng Output
+## Bảng Output Standard (chuẩn hóa đầy đủ Metadata)
 
+```markdown
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Expected Result | Test Data | Priority | Automatable | Auto Type | Tags |
 ```
-| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
-```
+
+> **Giải thích Metadata Automation:**
+> - **Automatable:** `Yes` / `No` / `Partial` (Độ khả thi để viết script tự động)
+> - **Auto Type:** `UI` / `API` / `Unit` / `N/A` (Loại automation phù hợp)
+> - **Tags:** `@Smoke`, `@Regression`, `@CriticalPath`, `@Security`, `@Boundary`
 
 ## Quy tắc Test Data (áp dụng cho cả 2 modes)
 
@@ -128,34 +130,57 @@ Sinh test cases **nhanh, đủ chất lượng** từ requirements/user stories 
 ✅ Đúng: "Nhập 256 ký tự vào trường Name (max: 255)"
 ```
 
-## Bảng Field-Level Validation (áp dụng cho cả 2 modes)
+## Bảng Field-Level Validation Checklist (15 Field Types)
 
 Khi form/UI có các input fields, agent **BẮT BUỘC** phải liệt kê từng trường và sinh validation TCs riêng theo loại:
 
 | Loại Field | Validation cần test |
 |---|---|
-| **Text (Name, Address...)** | Required/Optional · Min length · Max length · Chỉ khoảng trắng (whitespace-only) · Ký tự đặc biệt (`<>&"'`) · XSS injection (`<script>alert(1)</script>`) · SQL injection (`' OR 1=1--`) · Unicode/Emoji · Leading/trailing spaces |
+| **Text (Name, Address...)** | Required/Optional · Min/Max length · Whitespace-only · Ký tự đặc biệt (`<>&"'`) · XSS injection (`<script>alert(1)</script>`) · SQL injection (`' OR 1=1--`) · Unicode/Emoji · Leading/trailing spaces |
 | **Email** | Format hợp lệ (`user@domain.com`) · Thiếu `@` · Thiếu domain · Domain không hợp lệ · Nhiều `@` · Ký tự đặc biệt trước `@` · Max length · Case sensitivity · Email đã tồn tại (nếu unique) |
-| **Phone** | Chỉ chấp nhận số · Prefix hợp lệ (ví dụ: `+84`, `0`) · Min/Max length · Chữ cái xen lẫn · Dấu `-`, `.`, khoảng trắng · Mã vùng không hợp lệ |
-| **Date / DateTime** | Format đúng (dd/MM/yyyy, ISO...) · Ngày không tồn tại (`31/02`, `30/02`) · Năm nhuận (`29/02/2024`) · Ngày quá khứ / tương lai (tùy business rule) · Giá trị min/max date · Timezone (nếu áp dụng) |
-| **Number / Currency** | Min/Max value · Số âm · Số 0 · Số thập phân · Ký tự không phải số · Overflow (số cực lớn) · Leading zeros · Định dạng currency (dấu phẩy, dấu chấm) |
-| **Dropdown / Select** | Giá trị mặc định · Tất cả options hợp lệ · Option bị disabled · Thay đổi selection · Required validation (chưa chọn) |
+| **Phone** | Chỉ số · Prefix hợp lệ (ví dụ: `+84`, `0`) · Min/Max length · Chữ cái xen lẫn · Dấu `-`, `.`, khoảng trắng · Mã vùng không hợp lệ |
+| **Date / DateTime** | Format đúng (dd/MM/yyyy, ISO...) · Ngày không tồn tại (`31/02`, `30/02`) · Năm nhuận (`29/02/2024`) · Quá khứ / tương lai · Min/max date · Timezone |
+| **Number / Currency** | Min/Max value · Số âm · Số 0 · Số thập phân · Ký tự không phải số · Overflow · Leading zeros · Định dạng currency |
+| **Dropdown / Select** | Giá trị mặc định · Tất cả options hợp lệ · Option disabled · Thay đổi selection · Required validation |
 | **Checkbox / Radio** | Trạng thái mặc định · Check/Uncheck · Required validation · Nhóm radio (chỉ chọn 1) |
-| **File Upload** | File type hợp lệ/không hợp lệ · Max size · File rỗng (0 KB) · Tên file có ký tự đặc biệt · Multiple files (nếu cho phép) · Kéo thả vs nút chọn |
+| **File Upload** | File type hợp lệ/không hợp lệ · Max size · File rỗng (0 KB) · Tên file ký tự đặc biệt · Multiple files · Kéo thả vs nút chọn |
 | **Password** | Min/Max length · Yêu cầu ký tự đặc biệt · Yêu cầu chữ hoa/thường · Yêu cầu số · Copy-paste bị chặn? · Hiện/ẩn password · Confirm password khớp/không khớp |
 | **Textarea** | Max length · Line breaks · HTML tags · Resize (nếu UI cho phép) · Character counter (nếu có) |
+| **OTP / MFA Code** | Auto-focus ô tiếp theo · Paste chuỗi OTP · Hết hạn timeout · Vượt số lần nhập sai (retry limit/lockout) · Re-send OTP rate limit |
+| **Date Range / Time Picker** | Ngày kết thúc < Ngày bắt đầu · Khung giờ trùng lặp (time conflict) · Giới hạn khoảng ngày (VD: max 30 ngày) · Quá khứ/Tương lai restriction |
+| **Rich Text Editor (WYSIWYG)** | Sanitize HTML tags nguy hiểm (`<script>`, `<iframe>`) · Paste văn bản kèm format/ảnh · Character counter tính theo text thô vs HTML markup |
+| **Multi-Select / Tag Input** | Giới hạn số lượng tag · Tag trùng lặp · Xóa tag bằng Backspace/nút X · Tag có ký tự đặc biệt |
+| **Range Slider / Stepper** | Giới hạn min/max · Bước nhảy (step increment violation) · Nhập tay trực tiếp so với kéo slider |
 
-> **Nguyên tắc:** Mỗi trường có đặc tính riêng → validation riêng. Agent PHẢI phân tích từng field trước khi sinh TCs, không được dùng chung 1 bộ validation cho tất cả fields.
+## Scenarios Chuyên Sâu & Non-Functional Checklist (Áp dụng nâng cao)
 
-## Anti-Patterns (Mode QUICK)
+Agent phải tích hợp thêm các tình huống kiểm thử nâng cao khi phân tích module:
 
-- ❌ Sinh test data chung chung / placeholder
-- ❌ Chỉ có Happy Path, thiếu Negative/Boundary
-- ❌ Bỏ qua validation rules trong requirements
-- ❌ Test Steps mơ hồ ("nhập dữ liệu" → phải ghi rõ nhập gì, ở đâu)
-- ❌ Gộp validation nhiều trường vào 1 test case → mỗi trường phải có TC validation riêng
-- ❌ Dùng chung 1 bộ validation cho tất cả fields (mỗi field type có checklist riêng)
-- ❌ Bỏ qua security validation (XSS, SQL injection) cho text fields
+1. **Race Condition & Double Submit:**
+   - Double click liên tiếp nút Save/Submit (ngăn tạo 2 bản ghi trùng)
+   - Concurrent editing: 2 tabs/users cùng sửa 1 bản ghi đồng thời
+2. **Session & Network Resilience:**
+   - Session timeout / Token hết hạn giữa chừng khi đang điền form
+   - Network interruption (mất mạng khi submit payload, slow 3G timeout, retry logic)
+3. **Localization & UTF-8 / Emoji:**
+   - Nhập tiếng Việt đầy đủ dấu (`Tiếng Việt có dấu phức tạp ỨỜÁ...`)
+   - Nhập emoji (`😀🎉🚀`) và ký tự đa ngôn ngữ (RTL, tiếng Trung, Nhật, Ả Rập)
+4. **Keyboard Accessibility (A11y):**
+   - Điều hướng bằng phím `Tab` theo thứ tự hợp lý, kích hoạt bằng `Enter`/`Space`
+   - Hiển thị viền focus state rõ ràng
+5. **HTTP Status Codes (Cho API Test Cases):**
+   - Assert đầy đủ các status codes tiêu chuẩn: `200/201 Success`, `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `409 Conflict`, `422 Unprocessable Entity`, `429 Rate Limit`, `500/503 Server Error`.
+
+---
+
+## 🛡️ AI Self-Quality Gate (Quy trình Tự Kiểm Định Chất Lượng)
+
+Trước khi xuất kết quả cuối cùng cho user, Agent **BẮT BUỘC** tự rà soát qua 5 tiêu chí:
+- [ ] **1. Unique TC ID:** Đảm bảo không trùng mã TC ID và đúng quy tắc dự án (`PROJECT_MODULE_TC_001`).
+- [ ] **2. 1-to-1 Step-Expected Matching:** Các bước `Test Steps` (đánh số 1,2,3) khớp 1-1 với `Expected Result` (đánh số 1,2,3).
+- [ ] **3. Concrete Test Data:** 100% test data chứa giá trị cụ thể, không còn từ ngữ mơ hồ ("hợp lệ", "dữ liệu đúng").
+- [ ] **4. Field Validation Coverage:** Mọi input field trên UI đều có ít nhất 1 Positive TC và 2+ Negative/Boundary TCs.
+- [ ] **5. Automation Metadata Ready:** 100% test cases được gắn đầy đủ `Automatable`, `Auto Type`, và `@Tag`.
 
 ---
 
@@ -169,8 +194,8 @@ Quy trình bài bản, tuần tự cho module phức tạp. Bao gồm phân tíc
 
 > [!NOTE]
 > **2 luồng sử dụng riêng biệt:**
-> - **Luồng Antigravity (slash command):** Agent thực hiện theo hướng dẫn tổng quát bên dưới. Agent KHÔNG cần đọc file prompt.txt.
-> - **Luồng Copy-Paste (ChatGPT/Claude):** QA team copy nội dung prompt chi tiết từ `plans/manual/01-06/prompt.txt` vào chat AI, từng bước một.
+> - **Luồng Claude Code (command):** Agent thực hiện theo hướng dẫn tổng quát bên dưới. Agent KHÔNG cần đọc file prompt.txt.
+> - **Luồng Copy-Paste (Claude Chat):** QA team copy nội dung prompt chi tiết từ `plans/manual/01-06/prompt.txt` vào chat AI, từng bước một.
 
 ### Bước 1: Context & Role-play (Khởi tạo ngữ cảnh)
 
@@ -245,9 +270,6 @@ Quy trình bài bản, tuần tự cho module phức tạp. Bao gồm phân tíc
 
 **Output:** Traceability Matrix + High-Level Test Scenarios.
 
-> [!WARNING]
-> **Human Checkpoint:** User cần review danh sách scenarios để bổ sung các trường hợp đặc thù mà AI có thể bỏ sót. Đây là bước đánh giá rủi ro do con người thực hiện.
-
 ---
 
 ### Bước 5: RBT & TC Generation (Sinh Test Case chi tiết)
@@ -273,39 +295,34 @@ Quy trình bài bản, tuần tự cho module phức tạp. Bao gồm phân tíc
    - Edge Cases (timeout, mất kết nối...)
 4. **Validation chuyên biệt từng trường (Field-Level Validation):**
    - Liệt kê **tất cả input fields** trên form/UI đang test
-   - Sinh validation TCs **riêng cho TỪNG trường** theo đặc tính riêng
-   - Tham chiếu **Bảng Field-Level Validation** ở phần Mode QUICK để chọn validation phù hợp
+   - Sinh validation TCs **riêng cho TỪNG trường** theo đặc tính riêng (15 loại input field types)
    - **KHÔNG** gộp validation nhiều trường vào 1 TC
-5. Áp dụng **kỹ thuật thiết kế test case** phù hợp:
-   - **Equivalence Partitioning:** Chia input thành nhóm tương đương, test đại diện mỗi nhóm
-   - **Boundary Value Analysis (BVA):** Test giá trị tại ranh giới (min, min+1, max-1, max)
-   - **Decision Table:** Liệt kê tổ hợp điều kiện → kết quả (cho logic nhiều điều kiện)
-   - **State Transition:** Test chuyển đổi trạng thái hợp lệ + không hợp lệ (cho workflow)
+5. **Tích hợp Scenarios Chuyên Sâu & Non-Functional:** Race Condition/Double Submit, Session/Network Resilience, Localization/UTF-8/Emoji, Keyboard Accessibility (A11y), HTTP Status Codes.
 6. Nếu scenarios quá nhiều → sinh từng Module một, hỏi user để tiếp tục
 
 **Output:** Danh sách Test Cases chi tiết có Risk Level.
 
 ---
 
-### Bước 6: Template Mapping (Chuẩn hóa Format)
+### Bước 6: Template Mapping (Chuẩn hóa Format & Metadata)
 
-**Mục đích:** Đóng gói test cases thành bảng Markdown chuẩn, sẵn sàng copy sang Excel/Jira.
+**Mục đích:** Đóng gói test cases thành bảng Markdown chuẩn đầy đủ metadata cho Automation, sẵn sàng copy sang Excel/Jira hoặc sync vào Google Sheets.
 
 **Agent phải:**
 1. Chuẩn hóa toàn bộ test cases vào bảng Markdown:
 
-```
-| TC ID | Module | Risk Level | Test Title | Pre-Condition | Test Steps | Expected Result | Priority | Test Data |
+```markdown
+| TC ID | Module | Risk Level | Test Title | Pre-Condition | Test Steps | Expected Result | Priority | Test Data | Automatable | Auto Type | Tags |
 ```
 
 2. Quy tắc bảng:
    - TC ID theo format thống nhất (ví dụ: `CRM_CUST_TC_001`)
    - Test Steps và Expected Result đánh số, dùng `<br>` xuống dòng trong cell
+   - Gắn đầy đủ metadata `Automatable` (`Yes`/`No`/`Partial`), `Auto Type` (`UI`/`API`/`Unit`/`N/A`), và `@Tags` (`@Smoke`, `@Regression`, `@CriticalPath`...)
    - **TUYỆT ĐỐI không được bỏ sót** bất kỳ test case nào đã sinh ở Bước 5
-   - Nếu quá dài → chia thành Part 1, Part 2... và hỏi user để tiếp tục
-3. Xuất output dưới dạng Artifact (`test_cases_<module>.md`)
+3. **Chạy Self-Quality Gate (5 Tiêu chí):** Kiểm định lại trước khi xuất Artifact (`test_cases_<module>.md`).
 
-**Output:** Bảng Test Cases Markdown hoàn chỉnh.
+**Output:** Bảng Test Cases Markdown hoàn chỉnh kèm Metadata Automation.
 
 ---
 
@@ -323,26 +340,6 @@ Quy trình bài bản, tuần tự cho module phức tạp. Bao gồm phân tíc
 - ❌ Dùng chung 1 bộ validation cho tất cả fields (Email ≠ Phone ≠ Date ≠ Text)
 - ❌ Bỏ qua security validation (XSS, SQL injection) cho text/textarea fields
 - ❌ Không liệt kê danh sách fields trước khi sinh validation TCs
-
----
-
-## Prompt Templates
-
-Các prompt template mẫu cho quy trình FULL RBT nằm tại:
-
-```
-plans/manual/
-├── 01_context_and_roleplay/prompt.txt
-├── 02_analysis_and_qna/prompt.txt
-├── 03_decomposition/prompt.txt
-├── 04_traceability/prompt.txt
-├── 05_rbt_and_tc_generation/prompt.txt
-└── 06_template_mapping/prompt.txt
-```
-
-Agent cần đọc prompt template tương ứng **trước khi** thực hiện mỗi bước (FULL RBT mode).
-
-Mode QUICK không yêu cầu đọc prompt templates — agent áp dụng trực tiếp các kỹ thuật EP/BVA/Decision Table.
 
 ---
 
