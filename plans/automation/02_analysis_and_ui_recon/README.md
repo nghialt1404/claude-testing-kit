@@ -1,7 +1,7 @@
 # Bước 2: Phân tích & Điều tra UI (Analysis & UI Recon)
 
 **Workflow:** `/generate_automation_from_testcases` (tiếp tục)
-**Skill:** `qa_automation_engineer` + `ui_debug_agent`
+**Skill:** `skills-qa-automation-engineer` + `skills-ui-debug-agent`
 
 ---
 
@@ -25,4 +25,4 @@ Thay vì con người phải thủ công Inspect DOM, bước này giao nhiệm 
 - AI sẽ dùng **Accessibility Tree** và **DOM inspection** để tìm locator — không đoán.
 - Nếu cần đăng nhập, cung cấp tài khoản test trong prompt.
 - Viewport mặc định **1920x1080** (desktop) theo quy tắc trong rules.
-- AI ưu tiên locator theo thứ tự trong `.agent/rules/locator_strategy.md`.
+- AI ưu tiên locator theo thứ tự trong `.claude/rules/locator_strategy.md`.

@@ -1,14 +1,14 @@
 ---
 description: Thực thi UI flow trực tiếp trên browser, thu thập locators từ DOM thực tế, và sinh automation scripts. Hỗ trợ Playwright, Selenium, Appium.
 skills:
-  - ui_debug_agent
-  - smart_locator_agent
-  - qa_automation_engineer
+  - skills-ui-debug-agent
+  - skills-smart-locator-agent
+  - skills-qa-automation-engineer
 ---
 
 # Workflow: Sinh Automation từ UI Flow
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`ui_debug_agent`** (tại `.claude/skills/ui_debug_agent/SKILL.md`) trước khi bắt đầu. Ngoài ra tham khảo thêm skill **`smart_locator_agent`** để sinh locator ổn định và **`qa_automation_engineer`** cho quy tắc automation chung.
+> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`skills-ui-debug-agent`** (tại `.claude/skills/skills-ui-debug-agent/SKILL.md`) trước khi bắt đầu. Ngoài ra tham khảo thêm skill **`skills-smart-locator-agent`** để sinh locator ổn định và **`skills-qa-automation-engineer`** cho quy tắc automation chung.
 
 Workflow này giúp agent **thực thi trực tiếp** một chuỗi thao tác UI trên browser thật, thu thập locators từ DOM thực tế, và sinh automation scripts hoàn chỉnh — tất cả trong một luồng tự động, không cần manual test case có sẵn.
 
@@ -200,6 +200,16 @@ Nếu user chưa cung cấp đủ → hỏi:
    - Không dùng `waitForTimeout()` / `Thread.sleep()` — chỉ smart waits
    - Method names mô tả hành vi user, không mô tả thao tác DOM
    - Mỗi page → 1 file, mỗi test → 1 file
+
+4. **Tích hợp Report (BẮT BUỘC — tuân thủ `.claude/rules/reporting_rules.md`):**
+   - **Metadata mỗi test:** tên hiển thị Tiếng Việt mô tả hành vi + Description + Severity + Tags. Nếu flow chưa có mã TC, sinh mã tạm theo module (`<HỆ_THỐNG>_<MODULE>_TC_<3 số>`) gắn vào label `testId`
+   - **Test Body:** mỗi bước trong UI flow đã chạy ở Bước 2 → 1 step trong report, tên step Tiếng Việt có tiền tố `Arrange:` / `Act:` / `Assert:`
+   - **Page Object method** đánh dấu step API để sinh sub-step tự động
+   - **Screenshot:** đính ảnh trạng thái cuối trong teardown cho **MỌI** test — `trang_thai_cuoi_cua_test` (PASS) / `trang_thai_khi_that_bai` (FAIL)
+   - **KHÔNG** sinh attachment `stdout` / `stderr`
+   - **Output gom vào `reports/`** (allure-results · allure-report · html · logs · screenshots) — không rải file report ra root
+
+   Chi tiết bắt buộc: `.claude/rules/reporting_rules.md`.
 
 ### Bước 4: Chạy Test & Tự sửa lỗi (Execution & Auto-Heal)
 

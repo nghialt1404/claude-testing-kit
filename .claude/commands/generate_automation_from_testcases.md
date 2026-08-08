@@ -1,19 +1,19 @@
 ---
-description: Convert manual test cases into automation scripts autonomously using the 6-step AI-RBT Framework via Antigravity Capabilities.
+description: Convert manual test cases into automation scripts autonomously using the 6-step AI-RBT Framework via Claude Code Capabilities.
 skills:
-  - qa_automation_engineer
-  - ui_debug_agent
-  - smart_locator_agent
-  - test_data_generator
+  - skills-qa-automation-engineer
+  - skills-ui-debug-agent
+  - skills-smart-locator-agent
+  - skills-test-data-generator
 ---
 
 # Workflow: Sinh Automation Scripts từ Manual Test Cases
 
 > **BẮT BUỘC (MANDATORY SKILLS):** Bạn PHẢI nạp và đọc kỹ nội dung các skills sau trước khi bắt đầu:
-> - **`qa_automation_engineer`** (`.claude/skills/qa_automation_engineer/SKILL.md`) — Quy tắc automation chung + workflow routing
-> - **`ui_debug_agent`** (`.claude/skills/ui_debug_agent/SKILL.md`) — Inspect DOM, thu thập locators
-> - **`smart_locator_agent`** (`.claude/skills/smart_locator_agent/SKILL.md`) — Sinh locator ổn định
-> - **`test_data_generator`** (`.claude/skills/test_data_generator/SKILL.md`) — Sinh test data unique, traceable
+> - **`skills-qa-automation-engineer`** (`.claude/skills/skills-qa-automation-engineer/SKILL.md`) — Quy tắc automation chung + workflow routing
+> - **`skills-ui-debug-agent`** (`.claude/skills/skills-ui-debug-agent/SKILL.md`) — Inspect DOM, thu thập locators
+> - **`skills-smart-locator-agent`** (`.claude/skills/skills-smart-locator-agent/SKILL.md`) — Sinh locator ổn định
+> - **`skills-test-data-generator`** (`.claude/skills/skills-test-data-generator/SKILL.md`) — Sinh test data unique, traceable
 
 Workflow này giúp agent đọc file manual test cases do user cung cấp, tự mở browser inspect UI, thu thập locators thực tế, sinh automation scripts hoàn chỉnh (POM + Test), chạy test và tự sửa lỗi cho đến khi PASS.
 
@@ -50,8 +50,8 @@ Nếu user chưa cung cấp đủ → hỏi trước khi bắt đầu.
 ### Bước 1: Khởi tạo, Phân tích & Lên Kế Hoạch (Context & Analysis)
 
 1. **Đọc file test cases** do user cung cấp:
-   - File local → `view_file`
-   - URL (Google Sheets, Confluence, etc.) → `read_url_content`
+   - File local → `Read`
+   - URL (Google Sheets, Confluence, etc.) → `WebFetch`
    - Xác định format: Markdown table, Excel, JSON, hoặc free-form text
 
 2. **Parse test cases** và trích xuất:
@@ -99,7 +99,7 @@ Nếu user chưa cung cấp đủ → hỏi trước khi bắt đầu.
 2. **Với mỗi page trong test cases**, thực hiện:
    - `browser_snapshot` → đọc accessibility tree
    - Xác định tất cả elements cần tương tác (inputs, buttons, links, dropdowns...)
-   - Thu thập locator tốt nhất cho mỗi element (theo priority trong skill `smart_locator_agent`)
+   - Thu thập locator tốt nhất cho mỗi element (theo priority trong skill `skills-smart-locator-agent`)
    - Verify locator bằng cách thử tương tác (`browser_click`, `browser_type`)
 
 3. **Ghi nhận vào bảng Locator Collection:**
@@ -147,7 +147,7 @@ Nếu user chưa cung cấp đủ → hỏi trước khi bắt đầu.
 
 3. **Kiểm tra project structure hiện tại:**
    - Nếu project đã có pages/ → sinh file vào đúng thư mục
-   - Nếu project mới → tạo structure theo skill `framework_architect`
+   - Nếu project mới → tạo structure theo skill `skills-framework-architect`
    - Không tạo duplicate — kiểm tra page đã tồn tại chưa trước khi tạo mới
 
 ### Bước 4: Chuẩn bị Dữ liệu (Test Data Strategy)
@@ -157,7 +157,7 @@ Nếu user chưa cung cấp đủ → hỏi trước khi bắt đầu.
    - Data nào **cố định** (URL, config values) → đọc từ env/config
    - Data nào cần **nhiều bộ** (data-driven) → tạo file external (JSON/YAML)
 
-2. **Sinh test data utilities** (dùng skill `test_data_generator`):
+2. **Sinh test data utilities** (dùng skill `skills-test-data-generator`):
    ```
    Format: <prefix>_<testName>_<timestamp>
    Ví dụ:
@@ -204,6 +204,26 @@ Nếu user chưa cung cấp đủ → hỏi trước khi bắt đầu.
    - Import gọn gàng — không unused imports
    - Test independent — không phụ thuộc thứ tự chạy
    - Cleanup/teardown nếu test tạo data
+
+4. **Tích hợp Report (BẮT BUỘC — tuân thủ `.claude/rules/reporting_rules.md`):**
+
+   Mỗi test sinh ra PHẢI có đủ:
+
+   | Mục | Nguồn lấy từ manual TC |
+   |---|---|
+   | **Tên test** (Tiếng Việt) | Tiêu đề của TC — KHÔNG dùng tên hàm làm tên hiển thị |
+   | **Description** | Mục tiêu / Điều kiện tiên quyết của TC |
+   | **Severity** | Mức độ ưu tiên của TC (`blocker`/`critical`/`normal`/`minor`) |
+   | **Tags** | Nhóm chạy (`smoke`, `regression`) + tên module |
+   | **TC ID** | Mã TC gốc, gắn qua label `testId` → phục vụ RTM |
+
+   - **Test Body:** bọc mỗi giai đoạn bằng step có tên Tiếng Việt — `Arrange: ...` / `Act: ...` / `Assert: ...`. Mapping 1-1: mỗi **Step** trong manual TC → 1 step trong report.
+   - **Method của Page Object** đánh dấu step API (`@Step` / `test.step` / `@allure.step`) để sinh sub-step tự động.
+   - **Screenshot:** đính kèm ảnh trạng thái cuối trong teardown cho **MỌI** test — PASS đặt tên `trang_thai_cuoi_cua_test`, FAIL đặt `trang_thai_khi_that_bai`.
+   - **KHÔNG** để report sinh attachment `stdout` / `stderr` (pytest: thêm `--allure-no-capture`).
+   - **Output gom vào `reports/`:** allure-results · allure-report · allure-report-single · html · logs · screenshots. Nếu project đã có framework, tuân theo cấu hình sẵn có; nếu output đang rải ở root thì gom lại.
+
+   Chi tiết bắt buộc: `.claude/rules/reporting_rules.md`.
 
 ### Bước 6: Chạy Thử Nghiệm & Tự Sửa Lỗi (Execution & Auto-Heal — RULE E3)
 

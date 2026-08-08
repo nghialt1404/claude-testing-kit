@@ -1,19 +1,19 @@
 ---
 description: Đẩy kết quả test automation (Playwright/JUnit/Allure) lên Xray Test Management.
 skills:
-  - jira_integration
+  - skills-jira-integration
 ---
 
 # Workflow: Import Test Results to Xray
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`jira_integration`** (tại `.claude/skills/jira_integration/SKILL.md`) để biết cách sử dụng scripts trước khi bắt đầu.
+> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`skills-jira-integration`** (tại `.claude/skills/skills-jira-integration/SKILL.md`) để biết cách sử dụng scripts trước khi bắt đầu.
 
 Workflow này giúp đẩy kết quả test automation lên Xray (Cloud hoặc Server/Data Center) để tracking trên Jira.
 
 ## Các bước thực hiện:
 
 1. **Kiểm tra prerequisites:**
-   - Đọc skill `jira_integration` để nắm cấu trúc scripts.
+   - Đọc skill `skills-jira-integration` để nắm cấu trúc scripts.
    - Kiểm tra file `.env` đã cấu hình Xray credentials:
      - **Xray Cloud**: `XRAY_CLIENT_ID`, `XRAY_CLIENT_SECRET`
      - **Xray Server**: `JIRA_PAT` hoặc `JIRA_EMAIL` + `JIRA_API_TOKEN`

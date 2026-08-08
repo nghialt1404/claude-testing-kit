@@ -2,7 +2,7 @@
 # BƯỚC 5: SINH MÃ AUTOMATION (Script Generation)
 # ============================================================
 # Workflow: /generate_automation_from_testcases (tiếp tục)
-# Skill:    qa_automation_engineer
+# Skill:    skills-qa-automation-engineer
 # ============================================================
 # CÁCH DÙNG:
 # 1. Gửi prompt này SAU KHI đã review POM (Bước 3) và Data (Bước 4)
@@ -72,6 +72,6 @@ Sau khi sinh code, AI **phải tự chạy test**:
 ---
 
 > ⚠️ Tham khảo framework-specific rules:
-> - Playwright: `.agent/rules/playwright_rules.md`
-> - Selenium: `.agent/rules/selenium_rules.md`
-> - Appium: `.agent/rules/appium_rules.md`
+> - Playwright: `.claude/rules/playwright_rules.md`
+> - Selenium: `.claude/rules/selenium_rules.md`
+> - Appium: `.claude/rules/appium_rules.md`

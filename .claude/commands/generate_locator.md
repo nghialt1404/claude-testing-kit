@@ -1,8 +1,8 @@
 ---
 description: Sinh locator ổn định cho UI element. Hỗ trợ Playwright, Selenium, Appium.
 skills:
-  - smart_locator_agent
-  - ui_debug_agent
+  - skills-smart-locator-agent
+  - skills-ui-debug-agent
 ---
 
 # /generate_locator — Sinh Locator Ổn Định Cho UI Automation
@@ -11,8 +11,8 @@ skills:
 > AI inspect DOM/UI hierarchy thực tế, sinh locator ổn định theo priority chuẩn, verify uniqueness, trả về kết quả.
 
 > **BẮT BUỘC (MANDATORY):** Trước khi bắt đầu, PHẢI nạp và đọc kỹ:
-> - **Skill:** `.claude/skills/smart_locator_agent/SKILL.md` — Quy trình sinh locator
-> - **Skill:** `.claude/skills/ui_debug_agent/SKILL.md` — Quy trình inspect DOM
+> - **Skill:** `.claude/skills/skills-smart-locator-agent/SKILL.md` — Quy trình sinh locator
+> - **Skill:** `.claude/skills/skills-ui-debug-agent/SKILL.md` — Quy trình inspect DOM
 > - **Rule:** `.claude/rules/locator_strategy.md` — Bản đồ ưu tiên locator
 > - **Rule:** `.claude/rules/<framework>_rules.md` — Quy tắc riêng framework đang dùng
 

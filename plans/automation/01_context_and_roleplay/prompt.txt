@@ -2,12 +2,12 @@
 # BƯỚC 1: KHỞI TẠO NGỮ CẢNH (Context & Role-play)
 # ============================================================
 # Workflow: /generate_automation_from_testcases
-# Skill:    qa_automation_engineer
+# Skill:    skills-qa-automation-engineer
 # ============================================================
 # CÁCH DÙNG:
 # 1. Copy nội dung bên dưới dòng "---START---"
 # 2. Thay thế các phần trong [...] bằng dữ liệu thực tế
-# 3. Paste vào Antigravity chat và gửi
+# 3. Paste vào Claude Code chat và gửi
 # 4. Chờ AI xác nhận → sang Bước 2
 # ============================================================
 
@@ -49,8 +49,8 @@ Bạn phải tuân thủ nghiêm ngặt:
 
 ## Kiến trúc Project
 
-[Copy kiến trúc phù hợp từ file `0_project_architecture/README.md` vào đây,
-hoặc mô tả cấu trúc project hiện có nếu đã tồn tại]
+[Copy kiến trúc phù hợp từ `.claude/skills/skills-framework-architect/SKILL.md` mục **Project Structure Templates**
+vào đây, hoặc mô tả cấu trúc project hiện có nếu đã tồn tại]
 
 ---
 

@@ -10,6 +10,7 @@
     ],
     "deny": [
       "Delete source files without confirmation",
+      "Commit to remote repositories",
       "Push to remote repositories",
       "Install global packages"
     ]

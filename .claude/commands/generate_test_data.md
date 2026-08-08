@@ -1,8 +1,8 @@
 ---
 description: Sinh test data có cấu trúc, unique, traceable cho test cases. Hỗ trợ UI forms, API payloads, data-driven tests.
 skills:
-  - test_data_generator
-  - qa_automation_engineer
+  - skills-test-data-generator
+  - skills-qa-automation-engineer
 ---
 
 # /generate_test_data — Sinh Test Data Có Cấu Trúc
@@ -11,7 +11,7 @@ skills:
 > AI phân tích fields, constraints, sinh bộ data đầy đủ (positive, negative, boundary, edge cases) với format sẵn sàng sử dụng.
 
 > **BẮT BUỘC (MANDATORY):** Trước khi bắt đầu, PHẢI nạp và đọc kỹ:
-> - **Skill:** `.claude/skills/test_data_generator/SKILL.md` — Quy tắc sinh data
+> - **Skill:** `.claude/skills/skills-test-data-generator/SKILL.md` — Quy tắc sinh data
 > - **Rule:** `.claude/rules/automation_rules.md` — Section Test Data
 
 ---
@@ -39,7 +39,7 @@ skills:
    |-------|----------|---------|
    | User cung cấp trực tiếp | Đọc từ input | ⭐ Cao nhất |
    | DOM thực tế (UI form) | `browser_navigate` → `browser_snapshot` → phân tích input fields | ⭐ Cao |
-   | Swagger/OpenAPI spec | `read_url_content` → parse schema + constraints | ⭐ Cao |
+   | Swagger/OpenAPI spec | `WebFetch` → parse schema + constraints | ⭐ Cao |
    | Test cases đã có | Đọc test steps → trích xuất fields | Trung bình |
    | Đoán từ tên module | Dựa trên kinh nghiệm domain | ⭐ Thấp nhất |
 

@@ -30,10 +30,11 @@ Mỗi Test Case phải có đầy đủ:
 | Field | Yêu cầu |
 |-------|---------|
 | **Module / Sub-module** | Tên module đã phân rã ở Bước 3 |
+| **REQ ID** | Mã requirement mà TC cover (`REQ-XX` từ Traceability Matrix Bước 4) — **BẮT BUỘC**, dùng để đối soát "đủ case" |
 | **Test Case Title** | Tiêu đề ngắn gọn, rõ mục đích |
 | **Pre-conditions** | Điều kiện tiên quyết trước khi test |
-| **Test Steps** | Các bước thực hiện, **đánh số thứ tự** |
-| **Expected Results** | Kết quả mong đợi tương ứng từng bước, **đánh số** |
+| **Test Steps** | Các bước thực hiện, **đánh số thứ tự 1. 2. 3. — mỗi bước 1 hành động**, không viết đoạn văn liền |
+| **Expected Results** | Kết quả mong đợi, **đánh số khớp 1-1** với step tương ứng |
 | **Test Data** | Dữ liệu cụ thể (xem quy tắc bên dưới) |
 | **Priority** | High / Medium / Low |
 | **Risk Level** | High / Medium / Low |
@@ -64,8 +65,14 @@ Test Data **PHẢI CỤ THỂ**, không được dùng mô tả chung chung:
 - **Boundary Values:** Giá trị biên (min, max, min-1, max+1)
 - **Edge Cases:** Timeout, mất kết nối, concurrent access
 
+**Component-Level (BẮT BUỘC rà soát nếu module có):**
+- **Data Table/List:** Sort từng cột · Filter đơn + kết hợp · Search (một phần, không dấu, không kết quả) · Pagination (đầu/cuối, đổi page size) · Empty state · Bulk action
+- **CRUD Lifecycle:** Create → verify trong list · Edit → verify cập nhật · Delete → confirm dialog (Cancel/OK) · Xóa bản ghi đang liên kết · Tạo trùng unique field
+- **Phân quyền:** Mỗi role × mỗi hành động = 1 TC · Truy cập URL trực tiếp khi không có quyền
+- **Modal/Dialog:** Đóng bằng X/Cancel/ESC/click ngoài · Data reset khi mở lại · Submit lỗi không đóng modal
+- **Trạng thái:** Mỗi transition hợp lệ + mỗi transition bị chặn = 1 TC
+
 [Gợi ý bổ sung (tùy chỉnh theo dự án):
-- Phân quyền: User role A có quyền gì, không có quyền gì
 - Tương thích: Responsive design, multi-browser
 - Performance: Xử lý danh sách lớn (1000+ records)
 - ...]
@@ -170,7 +177,10 @@ Mới tạo → Đang xử lý → Đang giao → Hoàn thành
 Test: Mỗi transition hợp lệ + các transition KHÔNG hợp lệ (VD: Hoàn thành → Mới tạo)
 ```
 
-> Hãy chọn kỹ thuật phù hợp cho từng Module/Field dựa trên đặc tính dữ liệu và logic nghiệp vụ.
+**Quy tắc BẮT BUỘC áp dụng (không được chỉ nhắc tên kỹ thuật):**
+- Field có ràng buộc min/max/format → PHẢI có EP + BVA
+- Có **≥3 điều kiện kết hợp** ảnh hưởng 1 output → PHẢI lập Decision Table đầy đủ tổ hợp, mỗi rule = 1 TC (nếu >20 tổ hợp → pairwise, ghi chú lý do)
+- Entity có **≥3 trạng thái** hoặc status flow → PHẢI lập bảng State Transition, TC cho mọi transition hợp lệ + mọi transition bị chặn
 
 ---
 

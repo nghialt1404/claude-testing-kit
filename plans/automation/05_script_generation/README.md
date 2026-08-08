@@ -1,7 +1,7 @@
 # Bước 5: Sinh mã Automation (Script Generation)
 
 **Workflow:** `/generate_automation_from_testcases` (tiếp tục)
-**Skill:** `qa_automation_engineer`
+**Skill:** `skills-qa-automation-engineer`
 
 ---
 
@@ -41,5 +41,5 @@ Sinh code → Chạy test → FAIL?
 ## Lưu ý
 
 - AI sẽ **không hỏi user** trong quá trình self-fix (trừ khi gặp business rule mâu thuẫn).
-- Smart Waits bắt buộc — xem `.agent/rules/playwright_rules.md` hoặc `.agent/rules/selenium_rules.md`.
+- Smart Waits bắt buộc — xem `.claude/rules/playwright_rules.md` hoặc `.claude/rules/selenium_rules.md`.
 - Mỗi test case phải có **assertion rõ ràng** ở cuối.

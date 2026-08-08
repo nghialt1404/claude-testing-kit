@@ -1,5 +1,5 @@
 ---
-name: Framework Architect
+name: skills-framework-architect
 description: Skill thiết kế và scaffold automation framework hoàn chỉnh cho Playwright, Selenium, và Appium — bao gồm project structure, base classes, config management, reporting, và CI/CD integration.
 ---
 
@@ -99,14 +99,19 @@ Mỗi framework PHẢI bao gồm các thành phần sau (tùy chỉnh theo stack
 
 ### 7. Utilities (Mandatory)
 - Wait helpers (smart waits, custom conditions)
-- Screenshot utilities (capture on failure)
+- Screenshot utilities (capture cuối MỌI test — cả PASS lẫn FAIL)
 - Logger (structured logging, không dùng print/console.log)
 - Date/Time helpers, String generators
 
 ### 8. Reporting (Mandatory)
-- Tích hợp ít nhất 1 reporting tool
-- Screenshot attach on failure
+- Tích hợp ít nhất 1 reporting tool (Allure ưu tiên)
+- **Metadata mỗi test:** tên Tiếng Việt · Description · Severity · Tags · label `testId`
+- **Test Body có step** `Arrange:` / `Act:` / `Assert:` — Base Page dùng step API để sinh sub-step
+- **Screenshot attach cuối MỌI test** — cả PASS lẫn FAIL, không chỉ khi fail
+- **KHÔNG** attachment `stdout` / `stderr`
 - Test execution summary (pass/fail/skip counts)
+
+> Chi tiết bắt buộc: [`.claude/rules/reporting_rules.md`](../../rules/reporting_rules.md)
 
 ### 9. CI/CD Pipeline (Optional — nhưng khuyến khích)
 - GitHub Actions / GitLab CI / Jenkins pipeline template
@@ -262,13 +267,28 @@ project-root/
 
 ---
 
+## Browser Setup Rules (BẮT BUỘC)
+
+Áp dụng cho mọi framework Web sinh ra từ skill này — kế thừa từ `CLAUDE.md > Browser Rules`:
+
+| Quy tắc | Giá trị | Nơi cấu hình |
+|---|---|---|
+| **Viewport mặc định** | `1920 x 1080` | `playwright.config.ts` · `BrowserOptions.java` · `DriverFactory.java` · `conftest.py` |
+| **Headed mode** | Bật khi debug local | Đọc từ biến môi trường `HEADLESS=false` |
+| **Headless mode** | Chỉ khi chạy CI | CI pipeline set `HEADLESS=true` |
+| **Hard sleep** | ❌ CẤM tuyệt đối | Chỉ smart waits — xem bảng Anti-Patterns bên dưới |
+
+Framework **phải** cho phép bật/tắt headless qua config, **không** hardcode trong code.
+
+---
+
 ## Design Principles
 
 1. **DRY (Don't Repeat Yourself)** — Mỗi logic chỉ viết 1 lần, tái sử dụng qua Base classes và Utils
 2. **Single Responsibility** — Mỗi class/module làm 1 việc (Page chỉ chứa UI interaction, Test chỉ chứa test logic)
 3. **Open/Closed** — Framework dễ mở rộng (thêm page, thêm test) mà không sửa core
 4. **Configuration over Code** — Env, browser, timeout... quản lý qua config, không hardcode
-5. **Fail Fast, Log Rich** — Screenshot on failure, structured logging, clear assertion messages
+5. **Fail Fast, Log Rich** — Screenshot cuối mọi test, structured logging, clear assertion messages
 
 ---
 
@@ -290,7 +310,19 @@ project-root/
 Agent PHẢI tuân thủ các rules chi tiết:
 
 - `.claude/rules/automation_rules.md` — General automation best practices
+- `.claude/rules/reporting_rules.md` — Allure report: metadata, step, screenshot, cấm stdout
 - `.claude/rules/locator_strategy.md` — Locator selection priority
 - `.claude/rules/playwright_rules.md` — Playwright-specific rules
 - `.claude/rules/selenium_rules.md` — Selenium-specific rules
 - `.claude/rules/appium_rules.md` — Appium mobile automation rules
+- `CLAUDE.md` > "Browser Rules" — Viewport 1920×1080, headed/headless
+- `CLAUDE.md` > "Cleanup & Delivery" — Definition of Done trước khi bàn giao
+
+---
+
+## Related Files
+
+| File | Vai trò |
+|---|---|
+| `.claude/rules/reporting_rules.md` | Quy tắc report bắt buộc — metadata, step, screenshot, thư mục `reports/` |
+| `.claude/commands/generate_automation_framework.md` | Workflow 6 bước thực thi scaffold |

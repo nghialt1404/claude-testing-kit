@@ -1,13 +1,13 @@
 ---
 description: Sinh API test cases và automation scripts từ Swagger/OpenAPI specification. Hỗ trợ 2 mode — SPEC (chỉ test cases) và FULL (test cases + automation scripts).
 skills:
-  - qa_automation_engineer
-  - test_data_generator
+  - skills-qa-automation-engineer
+  - skills-test-data-generator
 ---
 
 # Command: Sinh API Tests từ Swagger/OpenAPI
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`qa_automation_engineer`** (tại `.claude/skills/qa_automation_engineer/SKILL.md`) trước khi bắt đầu. Ngoài ra, tham khảo thêm skill **`test_data_generator`** để sinh test data đúng chuẩn.
+> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`skills-qa-automation-engineer`** (tại `.claude/skills/skills-qa-automation-engineer/SKILL.md`) trước khi bắt đầu. Ngoài ra, tham khảo thêm skill **`skills-test-data-generator`** để sinh test data đúng chuẩn.
 
 Command này giúp agent phân tích Swagger/OpenAPI specification, xác định các endpoints, sinh API test cases có cấu trúc, và (tùy mode) tự động sinh automation scripts hoàn chỉnh.
 
@@ -33,8 +33,8 @@ Command này giúp agent phân tích Swagger/OpenAPI specification, xác định
 ### Bước 1: Tiếp nhận & Phân tích Spec (Parse & Analyze)
 
 1. **Thu thập Swagger/OpenAPI spec** từ user:
-   - **URL trực tiếp** (VD: `https://api.example.com/swagger.json`) → dùng `read_url_content` để fetch
-   - **File local** (JSON/YAML) → dùng `view_file` để đọc
+   - **URL trực tiếp** (VD: `https://api.example.com/swagger.json`) → dùng `WebFetch` để fetch
+   - **File local** (JSON/YAML) → dùng `Read` để đọc
    - **Swagger UI URL** → trích xuất URL spec gốc (thường là `/v2/api-docs` hoặc `/v3/api-docs`)
    - **Scalar API Reference URL** → inspect HTML để tìm `data-configuration` chứa URL spec (thường là `/swagger/json`, `/reference/json`, hoặc relative path trong attribute `url`). VD: `https://book.anhtester.com/swagger` → spec tại `https://book.anhtester.com/swagger/json`
    - **Các dạng API Doc khác** (Redoc, Stoplight, RapiDoc) → tìm URL spec trong page source hoặc network requests
@@ -96,7 +96,7 @@ Command này giúp agent phân tích Swagger/OpenAPI specification, xác định
    - **🔒 Security** — SQL injection, XSS, IDOR, Mass Assignment, ReDoS, sensitive data exposure
    - **📄 Pagination & Filtering** — Phân trang, sắp xếp, tìm kiếm
 
-3. **Sinh Test Data Matrix** (sử dụng skill `test_data_generator`):
+3. **Sinh Test Data Matrix** (sử dụng skill `skills-test-data-generator`):
    - Data valid cho Happy Path
    - Data invalid cho Negative cases (mỗi field 1 bộ negative)
    - Boundary values theo schema constraints (minLength, maxLength, min, max, pattern)

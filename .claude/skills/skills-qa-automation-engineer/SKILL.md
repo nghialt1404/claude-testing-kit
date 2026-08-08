@@ -1,5 +1,5 @@
 ---
-name: QA Automation Engineer
+name: skills-qa-automation-engineer
 description: Skill hỗ trợ agent thực hiện các tác vụ QA automation testing bao gồm generate test cases, automation scripts, API tests, locators, phân tích flaky tests, và tạo test data.
 ---
 
@@ -61,16 +61,16 @@ When the user request matches a specific task, select the appropriate workflow f
 
 ### Generate test cases from requirements
 
-> **Delegate:** Tác vụ này thuộc skill **`rbt_manual_testing`** — không phải `qa_automation_engineer`.
+> **Delegate:** Tác vụ này thuộc skill **`skills-rbt-manual-testing`** — không phải `skills-qa-automation-engineer`.
 
 Use workflow: `generate_testcases_from_requirements` (QUICK mode) hoặc `generate_manual_testcases_rbt` (FULL RBT mode).
 
 Triggers when user asks:
 
-- generate test cases → **delegate to `rbt_manual_testing` (QUICK mode)**
-- write manual test cases → **delegate to `rbt_manual_testing` (QUICK mode)**
-- test scenarios from requirement → **delegate to `rbt_manual_testing` (QUICK mode)**
-- sinh test cases đầy đủ / quy trình 6 bước → **delegate to `rbt_manual_testing` (FULL RBT mode)**
+- generate test cases → **delegate to `skills-rbt-manual-testing` (QUICK mode)**
+- write manual test cases → **delegate to `skills-rbt-manual-testing` (QUICK mode)**
+- test scenarios from requirement → **delegate to `skills-rbt-manual-testing` (QUICK mode)**
+- sinh test cases đầy đủ / quy trình 6 bước → **delegate to `skills-rbt-manual-testing` (FULL RBT mode)**
 
 ---
 
@@ -124,7 +124,9 @@ Triggers when user asks:
 
 Use workflow: `generate_cross_module_test_plan`
 
-> Workflow dành cho **tính năng phức tạp đi qua nhiều modules nối tiếp**. Sinh Data Flow Map + Ma trận kết hợp đa chiều (Pairwise / Business-critical / Full Cartesian).
+> Workflow dành cho **tính năng phức tạp đi qua nhiều modules nối tiếp**. Sinh Data Flow Map + Ma trận kết hợp đa chiều (Output-Class Coverage mặc định / Pairwise / Full Cartesian).
+>
+> ⚠️ Rule bất biến: mỗi Expected Output class phải xuất hiện ≥1 lần trong ma trận. Pairwise phủ *cặp*, KHÔNG đảm bảo phủ output class.
 
 Triggers when user asks:
 
@@ -167,7 +169,7 @@ Triggers when user asks:
 
 ### Generate automation framework
 
-> **Delegate:** Tác vụ này sử dụng skill **`framework_architect`** để thiết kế framework.
+> **Delegate:** Tác vụ này sử dụng skill **`skills-framework-architect`** để thiết kế framework.
 
 Use workflow: `generate_automation_framework`
 
@@ -236,7 +238,7 @@ Triggers when user asks:
 
 ### Analyze requirement document
 
-> **Delegate:** Tác vụ này sử dụng skill **`requirements_analyzer`** để phân tích requirement documents.
+> **Delegate:** Tác vụ này sử dụng skill **`skills-requirements-analyzer`** để phân tích requirement documents.
 
 Use workflow: `analyze_requirement_document`
 
@@ -280,14 +282,19 @@ Triggers when user asks:
 
 # Automation Framework
 
-Default automation stack:
+Default stack theo platform — dùng khi user **không chỉ định**. Bảng này là nguồn duy nhất; workflow `generate_automation_framework` (Bước 1) tuân theo đúng bảng này.
 
-- **Language:** Java
-- **UI automation:** Selenium WebDriver or Playwright
-- **Test framework:** TestNG
-- **API automation:** REST Assured
-- **Mobile automation:** Appium
-- **Design pattern:** Page Object Model (POM)
+| Platform | Framework mặc định | Ngôn ngữ | Runner | Report |
+|---|---|---|---|---|
+| 🌐 Web | **Playwright** | TypeScript | Playwright Test | HTML Report + Allure |
+| 📱 Mobile | **Appium** | Java | TestNG | Allure |
+| 🔌 API | **REST Assured** | Java | TestNG | Allure |
+
+- **Design pattern:** Page Object Model (POM) — mobile dùng Screen Object
+- **Stack thay thế** (khi user yêu cầu): Selenium WebDriver + Java + TestNG cho Web, Playwright + Java/Python
+- **Danh sách đầy đủ 8 stacks được hỗ trợ:** xem `skills-framework-architect` > Supported Stacks
+
+> ⚠️ **KHÔNG tự chọn stack khi user đã nêu ràng buộc** (team dùng Java, CI chỉ có Maven…). Hỏi xác nhận trước khi scaffold.
 
 ---
 
@@ -323,26 +330,46 @@ Avoid fragile selectors such as dynamic class names.
 
 The agent MUST also follow the detailed rules defined in `.claude/rules/`:
 
-- [automation_rules.md](.claude/rules/automation_rules.md) — General automation best practices
-- [locator_strategy.md](.claude/rules/locator_strategy.md) — Detailed locator selection rules
-- [playwright_rules.md](.claude/rules/playwright_rules.md) — Playwright-specific rules
-- [selenium_rules.md](.claude/rules/selenium_rules.md) — Selenium-specific rules
-- [appium_rules.md](.claude/rules/appium_rules.md) — Appium mobile automation rules
+- [`.claude/rules/automation_rules.md`](../../rules/automation_rules.md) — General automation best practices
+- [`.claude/rules/reporting_rules.md`](../../rules/reporting_rules.md) — Allure report: metadata, step, screenshot, cấm stdout
+- [`.claude/rules/locator_strategy.md`](../../rules/locator_strategy.md) — Detailed locator selection rules
+- [`.claude/rules/playwright_rules.md`](../../rules/playwright_rules.md) — Playwright-specific rules
+- [`.claude/rules/selenium_rules.md`](../../rules/selenium_rules.md) — Selenium-specific rules
+- [`.claude/rules/appium_rules.md`](../../rules/appium_rules.md) — Appium mobile automation rules
 
 ---
 
 # References
 
-The agent may consult additional documentation in the `references/` folder:
+## Ngữ cảnh dự án — agent TỰ KHÁM PHÁ, không có file template điền tay
 
-- `PROJECT_CONTEXT.md` — Project domain, tech stack, key modules
-- `TEST_STRATEGY.md` — Testing objectives, scope, execution plan
-- `PROMPT_TEMPLATES.md` — Reusable prompt templates for common QA tasks
+Skill này **không** kèm file hồ sơ dự án để user điền sẵn. Agent tự thu thập và tự ghi lại:
 
-External references (thay thế cho các file đã gộp):
+| Cần biết | Lấy ở đâu | Ghi vào đâu |
+|---|---|---|
+| Hệ thống làm gì, module nào, luồng nào | **Recon UI thực tế** qua Playwright MCP | `docs/requirements/<module>/requirements_<module>.md` |
+| Prefix module, mã REQ/TC kế tiếp | Đọc danh mục hiện có | `docs/requirements/README.md` · `docs/testcases/README.md` |
+| Business rules ẩn, known issues (CAPTCHA, OTP…) | Gặp khi recon / chạy test → ghi lại ngay | Mục "Ghi chú" của tài liệu module + Nhật ký thay đổi |
+| URL, tài khoản test | **User cung cấp lúc chat** | `.env` (git-ignored) — KHÔNG ghi vào tài liệu |
+| Môi trường dùng chung hay không | **Hỏi user một lần** nếu chưa biết | Bộ nhớ phiên của Claude Code |
 
-- `plans/automation/project_architecture/README.md` — Repository structure & project architecture (thay thế REPOSITORY_MAP.md)
-- `GEMINI.md` > "Cleanup & Delivery" — Quality checklist / Definition of Done (thay thế SELF_CHECK.md)
+**Nguyên tắc:**
+- Thiếu thông tin **suy ra được từ UI** → đi recon, KHÔNG hỏi user
+- Thiếu thông tin **không thể suy ra** (credentials, môi trường dùng chung, ràng buộc nội bộ) → hỏi user **một lần**, rồi ghi lại để phiên sau khỏi hỏi lại
+- **KHÔNG bịa** prefix, URL, hay business rule
+
+Template điền tay (tùy chọn — dùng khi muốn chốt ngữ cảnh dự án bằng file thay vì để agent tự khám phá):
+
+- `references/PROJECT_CONTEXT.md` — Domain, tech stack, key modules
+- `references/TEST_STRATEGY.md` — Mục tiêu, phạm vi, kế hoạch thực thi
+- `references/PROMPT_TEMPLATES.md` — Prompt tái sử dụng cho tác vụ QA phổ biến
+
+External references:
+
+- [`skills-framework-architect/SKILL.md`](../skills-framework-architect/SKILL.md) — Project structure & framework components theo từng stack
+- [`.claude/rules/reporting_rules.md`](../../rules/reporting_rules.md) — Quy tắc report bắt buộc
+- `plans/automation/project_architecture/README.md` — Repository structure & project architecture
+- `CLAUDE.md` > "Cleanup & Delivery" — Quality checklist / Definition of Done
 
 ---
 

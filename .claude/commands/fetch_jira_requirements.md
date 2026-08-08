@@ -1,19 +1,19 @@
 ---
 description: Lấy Requirements / User Stories từ Jira ticket và lưu thành file markdown hoặc JSON.
 skills:
-  - jira_integration
+  - skills-jira-integration
 ---
 
 # Workflow: Fetch Jira Requirements
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`jira_integration`** (tại `.claude/skills/jira_integration/SKILL.md`) để biết cách sử dụng scripts trước khi bắt đầu.
+> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`skills-jira-integration`** (tại `.claude/skills/skills-jira-integration/SKILL.md`) để biết cách sử dụng scripts trước khi bắt đầu.
 
 Workflow này giúp lấy requirements, user stories, hoặc issues từ Jira và chuyển thành tài liệu phục vụ test automation.
 
 ## Các bước thực hiện:
 
 1. **Kiểm tra prerequisites:**
-   - Đọc skill `jira_integration` để nắm cấu trúc scripts.
+   - Đọc skill `skills-jira-integration` để nắm cấu trúc scripts.
    - Kiểm tra file `.env` đã tồn tại và được cấu hình đúng.
    - Kiểm tra dependencies đã được cài đặt (`scripts/integrations/node_modules/`).
    - Nếu chưa cài, chạy: `cd scripts/integrations && npm install`
@@ -56,5 +56,5 @@ Workflow này giúp lấy requirements, user stories, hoặc issues từ Jira v�
 
 6. **Delivery:**
    - Trình bày kết quả bằng Tiếng Việt.
-   - Nếu user yêu cầu chuyển thành requirement document, sử dụng skill `requirements_analyzer` để format lại.
+   - Nếu user yêu cầu chuyển thành requirement document, sử dụng skill `skills-requirements-analyzer` để format lại.
    - Lưu file output vào thư mục phù hợp (`requirements/jira/`).

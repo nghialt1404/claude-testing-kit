@@ -1,14 +1,14 @@
 ---
 description: Khám phá ứng dụng web, sinh test plan và test scenarios. Hỗ trợ 2 mode — PLAN (chỉ test plan) và FULL (test plan + automation skeleton).
 skills:
-  - qa_automation_engineer
-  - requirements_analyzer
-  - ui_debug_agent
+  - skills-qa-automation-engineer
+  - skills-requirements-analyzer
+  - skills-ui-debug-agent
 ---
 
 # Workflow: Khám Phá Ứng Dụng & Sinh Test Plan
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`qa_automation_engineer`** (tại `.claude/skills/qa_automation_engineer/SKILL.md`) trước khi bắt đầu. Ngoài ra, tham khảo thêm skill **`requirements_analyzer`** và **`ui_debug_agent`** để hỗ trợ phân tích UI.
+> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`skills-qa-automation-engineer`** (tại `.claude/skills/skills-qa-automation-engineer/SKILL.md`) trước khi bắt đầu. Ngoài ra, tham khảo thêm skill **`skills-requirements-analyzer`** và **`skills-ui-debug-agent`** để hỗ trợ phân tích UI.
 
 Workflow này giúp agent tự động khám phá một ứng dụng web, phân tích cấu trúc, xác định các modules/user flows quan trọng, và sinh ra Test Plan hoàn chỉnh.
 

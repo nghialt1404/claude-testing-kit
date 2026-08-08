@@ -17,13 +17,13 @@ Sử dụng AI để tự động hóa quá trình xây dựng Automation Framew
 
 | Bước | Tên | Mục đích | Skill |
 |------|-----|----------|-------|
-| **0** | Project Architecture | Setup kiến trúc thư mục chuẩn | `qa_automation_engineer` |
-| **1** | Context & Role-play | Thiết lập vai trò + tech stack | `qa_automation_engineer` |
-| **2** | Analysis & UI Recon | AI tự mở browser, thu thập locators | `qa_automation_engineer` + `ui_debug_agent` |
-| **3** | POM Design | Thiết kế class Page Objects | `qa_automation_engineer` |
-| **4** | Test Data Strategy | Sinh class Data Generator | `qa_automation_engineer` + `test_data_generator` |
-| **5** | Script Generation | Sinh test script + tự chạy + tự fix | `qa_automation_engineer` |
-| **6** | Review & Refactoring | Clean code + CI/CD readiness | `qa_automation_engineer` |
+| **0** | Project Architecture | Setup kiến trúc thư mục chuẩn | `skills-qa-automation-engineer` |
+| **1** | Context & Role-play | Thiết lập vai trò + tech stack | `skills-qa-automation-engineer` |
+| **2** | Analysis & UI Recon | AI tự mở browser, thu thập locators | `skills-qa-automation-engineer` + `skills-ui-debug-agent` |
+| **3** | POM Design | Thiết kế class Page Objects | `skills-qa-automation-engineer` |
+| **4** | Test Data Strategy | Sinh class Data Generator | `skills-qa-automation-engineer` + `skills-test-data-generator` |
+| **5** | Script Generation | Sinh test script + tự chạy + tự fix | `skills-qa-automation-engineer` |
+| **6** | Review & Refactoring | Clean code + CI/CD readiness | `skills-qa-automation-engineer` |
 
 *(Mỗi bước tương ứng 1 thư mục con, gồm `README.md` + `prompt.txt`)*
 
@@ -47,11 +47,11 @@ Gọi workflow `/generate_automation_from_testcases` + đính kèm Test Cases:
 
 ## 📋 Rules tham chiếu
 
-- `.agent/rules/automation_rules.md` — POM, Data, Naming conventions
-- `.agent/rules/locator_strategy.md` — Thứ tự ưu tiên locator
-- `.agent/rules/playwright_rules.md` — Playwright-specific rules
-- `.agent/rules/selenium_rules.md` — Selenium-specific rules
-- `.agent/rules/appium_rules.md` — Appium-specific rules
+- `.claude/rules/automation_rules.md` — POM, Data, Naming conventions
+- `.claude/rules/locator_strategy.md` — Thứ tự ưu tiên locator
+- `.claude/rules/playwright_rules.md` — Playwright-specific rules
+- `.claude/rules/selenium_rules.md` — Selenium-specific rules
+- `.claude/rules/appium_rules.md` — Appium-specific rules
 
 ## 📁 Hướng dẫn nhanh
 

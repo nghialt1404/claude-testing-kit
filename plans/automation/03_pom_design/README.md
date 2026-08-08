@@ -1,7 +1,7 @@
 # Bước 3: Thiết kế cấu trúc POM (POM Design)
 
 **Workflow:** `/generate_automation_from_testcases` (tiếp tục)
-**Skill:** `qa_automation_engineer`
+**Skill:** `skills-qa-automation-engineer`
 
 ---
 
@@ -32,4 +32,4 @@ Sau khi AI đã thu thập locators từ DOM thật ở Bước 2, bước này 
 
 - Bước này chỉ thiết kế **Page classes**, CHƯA sinh test script.
 - Method nên return `this` hoặc target Page (fluent pattern) để chain được.
-- Tuân thủ quy tắc trong `.agent/rules/automation_rules.md`.
+- Tuân thủ quy tắc trong `.claude/rules/automation_rules.md`.
