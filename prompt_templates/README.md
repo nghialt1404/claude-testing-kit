@@ -20,12 +20,13 @@ Thư mục này chứa các prompt mẫu dùng nhanh (copy → paste → gửi) 
 | 02 | `prompt_02_generate_test_cases.txt` | `/generate_manual_testcases_rbt` | `skills-rbt-manual-testing` | **[Nâng cấp mới]** Sinh Manual TCs chuẩn RBT, Checklist 15 loại input fields, Race condition, Session, A11y, AI Self-Quality Gate & Automation Metadata |
 | 03 | `prompt_03_create_framework_playwright.txt` | `/generate_automation_framework` | `skills-framework-architect` | Dựng khung dự án Automation Playwright TypeScript |
 | 03 | `prompt_03_create_framework_selenium.txt` | `/generate_automation_framework` | `skills-framework-architect` | Dựng khung dự án Automation Selenium Java |
+| 03 | `prompt_03_create_framework_appium.txt` | `/generate_automation_framework` | `skills-framework-architect` | Dựng khung dự án Automation Appium Java (Mobile) |
 | 04 | `prompt_04_generate_script_playwright.txt` | `/generate_automation_from_testcases` | `skills-qa-automation-engineer` | Viết kịch bản tự động Playwright TypeScript theo POM |
 | 04 | `prompt_04_generate_script_selenium.txt` | `/generate_automation_from_testcases` | `skills-qa-automation-engineer` | Viết kịch bản tự động Selenium Java theo POM |
 | 05 | `prompt_05_convert_manual_to_automation.txt` | `/generate_automation_from_testcases` | `skills-qa-automation-engineer` | Chuyển đổi Manual Test Cases sang Automation Script |
-| 07 | `prompt_07_generate_test_data.txt` | `/generate_test_data` | `skills-test-data-generator` | Sinh dữ liệu kiểm thử có cấu trúc |
-| 08 | `prompt_08_analyze_flaky_tests.txt` | `/analyze_flaky_tests` | `skills-flaky-test-analyzer` | Phân tích và khắc phục Flaky Tests |
-| 09 | `prompt_09_generate_api_tests.txt` | `/generate_api_tests_from_swagger` | `skills-qa-automation-engineer` | **[Nâng cấp mới]** Sinh API tests từ Swagger/OpenAPI cover 12 HTTP Status Codes, OWASP API Security (BOLA/IDOR, Mass Assignment, ReDoS), SLA < 2s & Dynamic Auth Token |
+| 06 | `prompt_06_generate_test_data.txt` | `/generate_test_data` | `skills-test-data-generator` | Sinh dữ liệu kiểm thử có cấu trúc |
+| 07 | `prompt_07_analyze_flaky_tests.txt` | `/analyze_flaky_tests` | `skills-flaky-test-analyzer` | Phân tích và khắc phục Flaky Tests |
+| 08 | `prompt_08_generate_api_tests.txt` | `/generate_api_tests_from_swagger` | `skills-qa-automation-engineer` | **[Nâng cấp mới]** Sinh API tests từ Swagger/OpenAPI cover 12 HTTP Status Codes, OWASP API Security (BOLA/IDOR, Mass Assignment, ReDoS), SLA < 2s & Dynamic Auth Token |
 
 ## Cách Sử Dụng Trong Claude Code
 

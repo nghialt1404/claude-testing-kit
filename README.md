@@ -105,12 +105,13 @@ Dành cho tác vụ **đơn lẻ**, chỉ cần copy → thay `[...]` bằng d�
 | 02 | `prompt_02_generate_test_cases.txt` | **[Mới]** Sinh manual TCs RBT chuẩn 15 field types & Quality Gate |
 | 03 | `prompt_03_create_framework_playwright.txt` | Dựng framework Playwright TS |
 | 03 | `prompt_03_create_framework_selenium.txt` | Dựng framework Selenium Java |
+| 03 | `prompt_03_create_framework_appium.txt` | **[Mới]** Dựng framework Appium Java (Mobile) |
 | 04 | `prompt_04_generate_script_playwright.txt` | Viết test script Playwright TS |
 | 04 | `prompt_04_generate_script_selenium.txt` | Viết test script Selenium Java |
 | 05 | `prompt_05_convert_manual_to_automation.txt` | Chuyển manual TC sang automation |
-| 07 | `prompt_07_generate_test_data.txt` | Sinh test data có cấu trúc |
-| 08 | `prompt_08_analyze_flaky_tests.txt` | Phân tích test không ổn định |
-| 09 | `prompt_09_generate_api_tests.txt` | **[Mới]** Viết test API 12 status codes & OWASP Security |
+| 06 | `prompt_06_generate_test_data.txt` | Sinh test data có cấu trúc |
+| 07 | `prompt_07_analyze_flaky_tests.txt` | Phân tích test không ổn định |
+| 08 | `prompt_08_generate_api_tests.txt` | **[Mới]** Viết test API 12 status codes & OWASP Security |
 
 ---
 
