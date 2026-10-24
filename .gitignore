@@ -153,3 +153,5 @@ task.md
 
 # Toàn bộ output test (allure-results, report, log, screenshot)
 reports/
+.claude/.DS_Store
+.DS_Store
